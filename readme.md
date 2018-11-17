@@ -76,7 +76,7 @@ Whether the transportable database has loaded or not.
 
 The zip object created by JSZip which InnovyzeTransportableJS uses to parse the database.
 
-#### `toJsTree(element,options)`
+#### `toTreeViewer(element,options)`
 
 Display the transportable database as a JsTree. See [example](...) here. Returns a jsTree object.
 
@@ -96,13 +96,35 @@ include-upload - Currently work in progress. The idea is to
                  of the transportable viewer.
 ```
 
-#### `jsTree`
+#### `treeViewerInfo`
 
-The `jsTree` object if it has been instantiated.
+Object containing information about the instanciated Tree Viewer if there is one.
 
-#### `treeElement`
+##### `element`
 
-The `element` object passed to the `toJsTree()` function.
+The `element` object passed to the `toTreeViewer()` function.
+
+##### `items`
+
+An array of `TransportableItem` objects displayed in the tree. Note this array is not the same as `transportable.items`.
+
+##### `jstree`
+
+The `jstree` object for the tree viewer.
+
+##### `options`
+
+The options passed to `toTreeViewer()`
+
+##### `transportable`
+
+The `Transportable` object which instantiated the tree viewer.
+
+##### `tree`
+
+The root element of the tree displayed in the tree viewer.
+
+
 
 #### `toFileViewer(element,options)`
 
@@ -118,21 +140,33 @@ Object containing options.
 stripes - jsTree stripes theme.
 ```
 
-#### `jsFileTree`
+#### `fileViewerInfo`
 
-The `jsFileTree` object if it has been instantiated.
+Object containing information about the instanciated File Viewer if there is one.
 
-#### `fileViewerElement`
+##### `element`
 
-The `element` object passed to the `toFileViewer()` function if it has been instantiated.
+The `element` object passed to the `toFileViewer()` function.
 
-#### `fileItems`
+##### `items`
 
-An array of items passed to the fileViewer (mainly used for debugging) if it has been instantiated.
+An array of `TransportableItem` objects displayed in the tree. Note this array is not the same as `transportable.items`.
 
-#### `fileTree`
+##### `jstree`
 
-The tree used by jsTree in the fileViewer (mainly used for debugging) if it has been instantiated.
+The `jstree` object for the file viewer.
+
+##### `options`
+
+The options passed to `toFileViewer()`
+
+##### `transportable`
+
+The `Transportable` object which instantiated the file viewer.
+
+##### `tree`
+
+The root element of the tree displayed in the file viewer.
 
 ### `TransportableItem`
 
