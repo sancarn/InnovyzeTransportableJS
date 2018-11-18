@@ -174,37 +174,118 @@ The root element of the tree displayed in the file viewer.
 
 ##### `transportable`
 
-Transportable database of this item. This parameter is only used to set parent_transportable property.
+Type: `Transportable`. Transportable database of this item. This parameter is only used to set parent_transportable property.
 
 ##### `item`
 
-ZipItem found within a transportable database.
+Type: `ZipItem`. JSZip ZipItem found within a transportable database.
 
 ##### `data`
 
-Data contained within ZipItem.
-
+Type: `String`. Data contained within ZipItem.
 
 #### `id`
-#### `data`
+
+Type: `Int`. Contains the id of a `TransportableItem` object. `id` can also be set to:
+
+```
+ 0 : Root Object
+-1 : Global object
+-2 : Unmapped object (unknown data)
+```
+
+ID is calculated using the type iid and the cumulative id (integer found at the end of the file name). This id is used to determine the tree structure.
+
 #### `isDeletedObject`
+
+Type: `Boolean`. Determines whether the zip item is assumed to be a deleted object. This occurs when the ID is like:
+
+* AG**XXX**1.DAT
+* AG**XXX**2.DAT
+* MODG**XXX**3.DAT
+
 #### `isDir`
+
+Type: `Boolean`. Determines whether the zip item is a folder or not
+
 #### `isGlobal`
-#### `isMapped`
-#### `isModelObject`
-#### `isModelObjectPart`
+
+Type: `Boolean`. Determines whether the zip item is the `Globals.Dat` file.
+
 #### `isRootObject`
-#### `meta`
+
+Type: `Boolean`. Determines whether the zip item is the `RootObjects.Dat` file.
+
+#### `isModelObject`
+
+Type: `Boolean`. Determines whether the zip item is assumed to be a model object. I.E. has file pattern:
+
+* AG1.DAT
+* AG2.DAT
+* AG3.DAT
+* `/[A-Z]+\d+\.DAT/i`
+
+#### `isModelObjectPart`
+
+Type: `Boolean`. Determines whether the zip item is assumed to be related to a model object. I.E. has file pattern:
+
+* AG1SomePart.DAT
+* AG1SomeOtherPart.something
+* `/[A-Z]+\d+\w+/i`
+
+#### `isMapped`
+
+Type: `Boolean`. Determines whether the zip item has been mapped to a model object, part or else.
+
 #### `parent_transportable`
+
+Type: `Transportable`. The transportable object which contains this item.
+
 #### `zipItem`
+
+Type: `ZipItem`. The ZipItem created by JSZip which represents a specific file within the zip archive.
+
 #### `zipName`
+
+Type: `String`. Name of item in the zip archive.
+
 #### `zipParentPath`
+
+Type: `String`. Path of parent in the zip archive.
+
 #### `zipPath`
 
+Type: `String`. Path of item in the zip archive.
+
+
+#### `meta`
+
+Type: `Object`. If the item is a model object this will contain all data found within the `.DAT` file as a comma seperated. Objects data is found by the name in the `.DAT` file. Also worth noting arrays of integers are converted to actual arrays of integers.
+
 #### `type`
+
+Type: `Object`. If the item is a model object this will contain the type information of the item.
+
 #### `cumulative_id`
+
+Type: `Int`. If the item is a model object this will contain the cumulative id used to calculate the id.
+
 #### `child_ids`
+
+Type: `Array`. If the item is a model object this will contain an array of children ids contained within this model object.
+
 #### `children`
+
+Type: `Array`. If the item is a model object this will contain an array of children contained within this model object.
+
 #### `parent_id`
+
+Type: `Int`. If the item is a model object this will contain the id of this item's parent.
+
 #### `parent`
+
+Type: `TransportableItem`. If the item is a model object this will contain the `TransportableItem` which corresponds to this item's parent.
+
 #### `parts`
+
+Type: `Array`. If the item is a model object this will contain all identified part's which correspond to this `TransportableItem`, if applicable.
