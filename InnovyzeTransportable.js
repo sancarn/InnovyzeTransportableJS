@@ -41,7 +41,7 @@ class Transportable {
                 break;
             //Assume (and test) File object.
             case "object":
-                if(pathOrFile.__proto__.constructor.name=="File"){
+                if(pathOrFile.__proto__.constructor.toString()=="[object File]"){
                     This.name = /([^\/\\]+)\.icmt$/.exec(pathOrFile.name)[1];
                     This._instanceFromFile(pathOrFile);
                     break;
