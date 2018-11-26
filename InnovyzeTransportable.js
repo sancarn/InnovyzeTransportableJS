@@ -5,12 +5,69 @@
 //Ruby sorting method - Convenience wrapper around Array.prototype.sort()
 //Callback method provided is used to get the content to sort 
 Array.prototype.sort_by = function(getSortContent){
-    return this.sort(function(a,b){
-     var aop = getSortContent==undefined ? a : getSortContent(a);
-     var bop = getSortContent==undefined ? b : getSortContent(b);
-     return aop < bop ? -1 : 1;
-    });
- };
+  return this.sort(function(a,b){
+   var aop = getSortContent==undefined ? a : getSortContent(a);
+   var bop = getSortContent==undefined ? b : getSortContent(b);
+   return aop < bop ? -1 : 1;
+  });
+};
+
+//Polyfill for padStart
+// https://github.com/uxitten/polyfill/blob/master/string.polyfill.js
+if (!String.prototype.padStart) {
+    String.prototype.padStart = function padStart(targetLength, padString) {
+        targetLength = targetLength >> 0; //truncate if number, or convert non-number to 0;
+        padString = String(typeof padString !== 'undefined' ? padString : ' ');
+        if (this.length >= targetLength) {
+            return String(this);
+        } else {
+            targetLength = targetLength - this.length;
+            if (targetLength > padString.length) {
+                padString += padString.repeat(targetLength / padString.length); //append to original to ensure we are longer than needed
+            }
+            return padString.slice(0, targetLength) + String(this);
+        }
+    };
+}
+
+//Polyfill for repeat
+if (!String.prototype.repeat) {
+  String.prototype.repeat = function(count) {
+    'use strict';
+    if (this == null) {
+      throw new TypeError('can\'t convert ' + this + ' to object');
+    }
+    var str = '' + this;
+    count = +count;
+    if (count != count) {
+      count = 0;
+    }
+    if (count < 0) {
+      throw new RangeError('repeat count must be non-negative');
+    }
+    if (count == Infinity) {
+      throw new RangeError('repeat count must be less than infinity');
+    }
+    count = Math.floor(count);
+    if (str.length == 0 || count == 0) {
+      return '';
+    }
+    // Ensuring count is a 31-bit integer allows us to heavily optimize the
+    // main part. But anyway, most current (August 2014) browsers can't handle
+    // strings 1 << 28 chars or longer, so:
+    if (str.length * count >= 1 << 28) {
+      throw new RangeError('repeat count must not overflow maximum string size');
+    }
+    var maxCount = str.length * count;
+    count = Math.floor(Math.log(count) / Math.log(2));
+    while (count) {
+       str += str;
+       count--;
+    }
+    str += str.substring(0, maxCount - str.length);
+    return str;
+  }
+}
 
 class Transportable {
     //Constructor for transportable database.
@@ -363,7 +420,7 @@ class Transportable {
             };
 
             //if a parent should exist but doesn't create and assign it.
-            if(!item._parent && item.path.includes("/")){
+            if(!item._parent && item.path.indexOf("/")!==-1){
                 var parent = makeParent(item.path);
                 if(parent){
                     item._parent = parent;
@@ -434,6 +491,10 @@ class Transportable {
         });
 
         return this.fileViewerInfo;
+    }
+
+    getVersion(){
+        return Transportable.versions[this.global.VersionGUID]
     }
     
 }
@@ -568,6 +629,20 @@ class TransportableItem{
 
 //Array of types for transportable lookups
 Transportable.types = [];
+
+//Version history for transportable databases
+Transportable.versions = {
+    "{C1AA7612-F6DA-46ce-BE75-7AEF7640965C}":5.0,
+    "{DAAC6FA7-0D69-4F31-8DEB-3B02D9032435}":5.5,
+    "{F00FFC6D-96DB-41D1-B0FB-78AD415DEADB}":6.0,
+    "{CCCA38C1-5615-4883-86FD-422D0C06E2F0}":6.5,
+    "{FDE1819E-9138-4F62-9CB6-94C136EC2EF3}":7.0,
+    "{DE74A25A-747E-4CFA-A625-1DB600EBFFD7}":7.5,
+    "{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}":8.0,
+    "{CBCFB6A9-1827-424B-BB09-F56BE669A1CB}":8.5,
+    "{E0BDC1BA-874D-46D5-B10E-984F66C89C61}":9.0,
+    "{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}":9.5
+  }
 
 
 //Icons and type info.
