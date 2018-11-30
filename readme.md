@@ -4,6 +4,10 @@ A library which can parse Transportable databases provided by Innovyze's InfoWor
 
 [Read more on the article about the library](http://sancarn.github.io/Business/Water/ICMTransportables)
 
+## Disclaimer
+
+Note: This library is unofficial and will be unsupported by Innovyze.
+
 ## Dependencies:
 
 ### Always required
